@@ -1,0 +1,41 @@
+# ---- Go build output ----
+# Compiled binaries (go build ./cmd/gateway -> gateway / gateway.exe)
+/gateway
+/gateway.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary / coverage output
+*.test
+*.out
+coverage.*
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Dependency dir (only relevant if vendoring)
+/vendor/
+
+# ---- Project-specific ----
+# Architecture screenshots / scratch images (samajhne ke liye the, repo me nahi)
+*.png
+*.jpg
+*.jpeg
+Screenshot*.png
+
+# Local env / secrets (Phase 1 me config aayega — keys yahaan aa sakti hain)
+.env
+.env.local
+*.local.json
+
+# ---- Editor / OS junk ----
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store
