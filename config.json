@@ -1,0 +1,11 @@
+{
+   
+    "gateway_port" : ":7070",
+    "providers" : [
+        {
+             "name" : "mock_provider",
+             "base_url":"http://localhost:8080"
+        }
+    ],
+    "default_provider" : "mock_provider"
+}
