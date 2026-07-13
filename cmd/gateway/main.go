@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/IshanHunt77/llm-gateway/internal/config"
+	"github.com/IshanHunt77/llm-gateway/internal/middleware"
 	"github.com/IshanHunt77/llm-gateway/internal/provider"
 	"github.com/IshanHunt77/llm-gateway/internal/proxy"
 )
@@ -14,7 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	 log.Printf("%+v", cfg)
+
 	target, err := cfg.DefaultProviderURL()
 	if err != nil {
 		log.Fatal(err)
@@ -29,6 +30,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Fatal((http.ListenAndServe(cfg.GatewayPort, h)))
+	log.Fatal((http.ListenAndServe(cfg.GatewayPort, middleware.ServerHeader((middleware.Logging(h))))))
 
 }

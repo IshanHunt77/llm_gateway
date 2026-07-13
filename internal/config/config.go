@@ -30,7 +30,7 @@ func Load() (*Config, error) {
 		return nil, err
 	}
 	for i := range cfg.Providers {
-		envName := strings.ToUpper(cfg.Providers[i].Name)+"_API_KEY"
+		envName := strings.ToUpper(cfg.Providers[i].Name) + "_API_KEY"
 		cfg.Providers[i].APIKey = os.Getenv(envName)
 	}
 	return &cfg, nil
