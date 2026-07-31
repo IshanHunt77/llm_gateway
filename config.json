@@ -1,6 +1,6 @@
 {
    
-    "gateway_port" : ":7070",
+    "gateway_port" : ":9090",
     "providers" : [
         {
              "name" : "mock_provider",

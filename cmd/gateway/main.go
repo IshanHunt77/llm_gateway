@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/IshanHunt77/llm-gateway/internal/cache"
 	"github.com/IshanHunt77/llm-gateway/internal/config"
 	"github.com/IshanHunt77/llm-gateway/internal/middleware"
 	"github.com/IshanHunt77/llm-gateway/internal/provider"
@@ -29,7 +30,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Fatal((http.ListenAndServe(cfg.GatewayPort, middleware.ServerHeader((middleware.Logging(h))))))
+	c := cache.New()
+	c.Upsert("/","cached response!")
+	
+	log.Fatal((http.ListenAndServe(cfg.GatewayPort, middleware.ServerHeader((middleware.Logging(middleware.Caching(c)(h)))))))
 
 }
