@@ -137,8 +137,8 @@ The cache package ships with concurrency tests that exercise the `sync.RWMutex`-
 | 0 | Passthrough reverse proxy | ✅ Done |
 | 1 | Config + multi-provider routing + env secrets | ✅ Done |
 | 2 | Middleware chain (logging) | ✅ Done |
-| 3 | Caching (SHA-256 key, RWMutex store) | 🔨 In progress |
-| 4 | Rate limiting (token bucket) | ⏳ Planned |
+| 3 | Caching (SHA-256 key, RWMutex store) | ✅ Done |
+| 4 | Rate limiting (token bucket) | In Progress |
 | 5 | Retries + backoff with jitter | ⏳ Planned |
 | 6 | Circuit breaker + fallback | ⏳ Planned |
 | 7 | SSE streaming | ⏳ Planned |

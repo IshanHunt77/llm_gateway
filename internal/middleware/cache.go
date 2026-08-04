@@ -2,6 +2,10 @@ package middleware
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"io"
+
 	"log/slog"
 	"net/http"
 
@@ -18,12 +22,19 @@ func (rw *wrapper) Write(b []byte) (int,error) {
 					rw.buff.Write(b)
 					val,err:=rw.ResponseWriter.Write(b)
 					return val,err
-				}
+}
 
 func Caching(c *cache.Cache) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler{
 		return http.HandlerFunc(func(w http.ResponseWriter,r *http.Request){
-			key := r.URL.Path
+			read,err := io.ReadAll(r.Body)
+			r.Body = io.NopCloser(bytes.NewReader(read))
+			if err != nil {
+				next.ServeHTTP(w,r)
+				return
+			}
+			sum := sha256.Sum256((read))
+			key := hex.EncodeToString(sum[:])
 			val,ok:=c.Read(key)
 			if !ok {
 				wrap := wrapper{ResponseWriter: w}
@@ -34,7 +45,6 @@ func Caching(c *cache.Cache) func(http.Handler) http.Handler {
 				w.Write([]byte(val))
 				slog.Info("Hit")
 				return
-				
 			}
 			
 		})
