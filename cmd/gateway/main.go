@@ -9,6 +9,7 @@ import (
 	"github.com/IshanHunt77/llm-gateway/internal/middleware"
 	"github.com/IshanHunt77/llm-gateway/internal/provider"
 	"github.com/IshanHunt77/llm-gateway/internal/proxy"
+	"github.com/IshanHunt77/llm-gateway/internal/ratelimit"
 )
 
 func main() {
@@ -31,8 +32,9 @@ func main() {
 		log.Fatal(err)
 	}
 	c := cache.New()
-	c.Upsert("/","cached response!")
-	
-	log.Fatal((http.ListenAndServe(cfg.GatewayPort, middleware.ServerHeader((middleware.Logging(middleware.Caching(c)(h)))))))
+	b := ratelimit.New(cfg.RateLimit.Capacity, cfg.RateLimit.RefillRate)
+	c.Upsert("/", "cached response!")
+
+	log.Fatal(http.ListenAndServe(cfg.GatewayPort, middleware.ServerHeader(middleware.Logging(middleware.RateLimit(b)(middleware.Caching(c)(h))))))
 
 }

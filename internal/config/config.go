@@ -14,9 +14,15 @@ type Provider struct {
 }
 
 type Config struct {
-	GatewayPort     string     `json:"gateway_port"`
-	Providers       []Provider `json:"providers"`
-	DefaultProvider string     `json:"default_provider"`
+	GatewayPort     string          `json:"gateway_port"`
+	Providers       []Provider      `json:"providers"`
+	DefaultProvider string          `json:"default_provider"`
+	RateLimit       RateLimitConfig `json:"rate_limit"`
+}
+
+type RateLimitConfig struct {
+	Capacity   float64 `json:"capacity"`
+	RefillRate float64 `json:"refill_rate"`
 }
 
 func Load() (*Config, error) {
