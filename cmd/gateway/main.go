@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/IshanHunt77/llm-gateway/internal/cache"
 	"github.com/IshanHunt77/llm-gateway/internal/config"
@@ -10,6 +11,7 @@ import (
 	"github.com/IshanHunt77/llm-gateway/internal/provider"
 	"github.com/IshanHunt77/llm-gateway/internal/proxy"
 	"github.com/IshanHunt77/llm-gateway/internal/ratelimit"
+	"github.com/IshanHunt77/llm-gateway/internal/retry"
 )
 
 func main() {
@@ -27,7 +29,7 @@ func main() {
 		log.Fatal(http.ListenAndServe(":8080", provider.Handler()))
 	}() //background
 
-	h, err := proxy.New(target)
+	h, err := proxy.New(target,retry.New(http.DefaultTransport,3,100*time.Millisecond))
 	if err != nil {
 		log.Fatal(err)
 	}
